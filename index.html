@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>崩坎油柑合作社 · 小小品果师 | 百千万助农行动</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-image: url('https://p11-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/159208af2aac4581a48b84947d78253f.png~tplv-a9rns2rl98-24:720:720.jpeg?lk3s=8e244e95&rcl=2026043023261157473FED4712021139DD&rrcfp=d52e923b&x-expires=1778167571&x-signature=lHKyHfUbH6nTCRsi2IhPYThV6fQ%3D');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+            padding: 1rem 0.5rem;
+            position: relative;
+            font-size: 16px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('https://cdn.pixabay.com/photo/2020/05/31/11/05/indian-gooseberry-5242359_640.jpg');
+            background-repeat: repeat;
+            background-size: 90px;
+            opacity: 0.08;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .game-hub {
+            max-width: 1080px;    
+            width: 100%;
+            margin: 0 auto;
+            background: transparent;
+            border-radius: 0;
+            box-shadow: none;
+            overflow: visible;
+            border: none;
+            position: relative;
+            z-index: 2;
+            padding: 0;
+        }
+        .story-header {
+            background: transparent;
+            padding: 0.6rem 1rem 0.2rem 1rem;
+            text-align: center;
+            border-bottom: none;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .story-header:before, .story-header:after { display: none; }
+        .story-header h1 { 
+            font-size: clamp(1.6rem, 4vw, 2.3rem);
+            background: linear-gradient(to top, #33c0ed 80%, #bdeaf8 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            -webkit-text-stroke: 0.8px #ffffff;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+            font-weight: bold;
+        }
+        .badges-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-top: 0.2rem;
+            margin-bottom: 0.3rem;
+        }
+        .village-badge {
+            background: rgba(255, 238, 204, 0.92);
+            display: inline-block;
+            padding: 5px 18px;
+            border-radius: 40px;
+            font-size: clamp(0.75rem, 1.6vw, 0.9rem);
+            font-weight: bold;
+            color: #b46f2a;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            backdrop-filter: blur(2px);
+            white-space: nowrap;
+        }
+        @media (max-width: 550px) {
+            .village-badge { white-space: normal; text-align: center; line-height: 1.3; }
+        }
+        .level-stage { padding: 0.6rem; background: transparent; width: 100%; }
+        @keyframes popScore {
+            0% { transform: scale(0.3); opacity: 0; }
+            25% { transform: scale(1.4); opacity: 1; color: #ffaa33; text-shadow: 0 0 8px gold; }
+            60% { transform: scale(1.1); opacity: 0.9; }
+            100% { transform: scale(0.8); opacity: 0; top: -60px; }
+        }
+        .score-animation {
+            position: absolute;
+            font-size: clamp(1.5rem, 3.5vw, 2rem);
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 200;
+            animation: popScore 2.2s ease-out forwards;
+            white-space: nowrap;
+        }
+        /* 故事卡片背景改为透明淡蓝色 */
+        .story-card {
+            background:rgba(225, 245, 254, 0.55);
+            backdrop-filter: blur(3px);
+            border-radius: clamp(1rem, 3.5vw, 1.8rem);
+            margin-bottom: 1rem;
+            padding: 0.7rem 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+            border-left: 8px solid #ffb74d;
+        }
+        .story-img-custom { flex: 1 1 110px; text-align: center; }
+        .story-img-custom img { 
+            max-width: clamp(90px, 22vw, 130px);
+            border-radius: clamp(16px, 3.5vw, 28px); 
+            background: white; padding: 4px; border: 3px solid #ffc489;
+            object-fit: cover; height: auto; width: 100%;
+            box-shadow: 0 4px 10px rgba(255, 180, 80, 0.2);
+        }
+        .level2-feature-img { flex: 1 1 150px; text-align: center; }
+        .level2-feature-img img {
+            max-width: clamp(130px, 30vw, 190px);
+            border-radius: clamp(16px, 3.5vw, 28px); 
+            background: white; padding: 5px; border: 3px solid #ffc489;
+            object-fit: cover; height: auto; width: 100%;
+        }
+        .level3-sort-img { flex: 1 1 150px; text-align: center; }
+        .level3-sort-img img {
+            max-width: clamp(140px, 34vw, 210px);
+            border-radius: clamp(16px, 3.5vw, 28px); 
+            background: white; padding: 5px; border: 3px solid #ffc489;
+            object-fit: cover; height: auto; width: 100%;
+        }
+        .story-text { flex: 2 1 200px; }
+        .story-text h3 {
+            font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+            color: #2c6e1a;
+            margin-bottom: 0.4rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 0 rgba(255,255,200,0.8);
+        }
+        .story-text p {
+            font-size: clamp(0.85rem, 1.6vw, 1rem);
+            line-height: 1.4;
+            color: #2c5a1a;
+            font-weight: 600;
+            text-shadow: 0 0 2px rgba(255,255,220,0.5);
+        }
+        .current-level-card {
+            background: rgba(255, 255, 250, 0.92);
+            border-radius: clamp(1.3rem, 4vw, 2.2rem);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 2px solid rgba(255, 230, 180, 0.8);
+            transition: 0.2s;
+            margin-bottom: 0.8rem;
+            backdrop-filter: blur(2px);
+        }
+        .level-illustration {
+            background: rgba(255, 242, 224, 0.9);
+            padding: 0.5rem;
+            text-align: center;
+            border-bottom: 2px dashed #f7cf92;
+            position: relative;
+        }
+        .level-illustration:before { content: "🍈✨"; font-size: clamp(0.9rem, 2.2vw, 1.2rem); position: absolute; left: 10px; top: 4px; opacity: 0.6; }
+        .level-title { 
+            font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+            font-weight: bold; color: #467a2c; margin: 2px 0;
+        }
+        .card-body { padding: 0.7rem; }
+        .camera-area { 
+            background: #f3e9d8; 
+            border-radius: clamp(1.2rem, 3.5vw, 1.8rem); 
+            padding: 10px; text-align: center; margin-bottom: 10px; 
+            border: 2px dashed #c7a6b;
+        }
+        .level1-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin: 10px 0;
+        }
+        button {
+            background: #ffcd6c;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-weight: bold;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+            margin: 5px 4px 0 0;
+            cursor: pointer;
+            box-shadow: 0 3px 0 #b87c2c;
+            transition: 0.08s;
+            font-size: clamp(0.85rem, 1.6vw, 0.95rem);
+        }
+        button.primary { 
+            background: #6fa83d; color: white; box-shadow: 0 3px 0 #376e15;
+        }
+        button:active { transform: scale(0.96); }
+        button:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+        .image-placeholder {
+            width: 210px;
+            height: 165px;
+            background: #ecdca8;
+            color: #b28b48;
+            font-size: 15px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            border: 3px solid #ffc064;
+            margin: 5px auto;
+        }
+        video, img { 
+            max-width: 100%;
+            border-radius: clamp(16px, 3.5vw, 24px); 
+            background: #e0cfb4; margin: 4px auto; display: block; 
+            border: 3px solid #ffc064;
+        }
+        #capturedImg, #level2PreviewImg {
+            max-width: 220px !important;
+            max-height: 200px !important;
+            width: auto !important;
+            height: auto !important;
+        }
+        .feature-options { 
+            background: #fff8ef; padding: 10px; 
+            border-radius: clamp(16px, 3.5vw, 26px);
+            margin: 0.6rem 0;
+        }
+        .feat-group { margin-bottom: 12px; border-left: 5px solid #fbb852; padding-left: 10px; }
+        .feat-group label { font-size: clamp(0.9rem, 1.7vw, 1rem); font-weight: bold; color: #b46f2a; }
+        .radio-options { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 0.3rem; }
+        .radio-options label { 
+            background: #fef0df; padding: 5px 14px; border-radius: 36px; font-weight: bold; 
+            cursor: pointer; font-size: clamp(0.85rem, 1.6vw, 0.95rem);
+            border: 1.5px solid #ffddaa;
+        }
+        .radio-options label:has(input:checked) { background: #bfdd9c; color: #1e4a0c; border-color: #6eac3d; }
+        .grade-zones { display: flex; gap: 10px; flex-wrap: wrap; margin: 12px 0; }
+        .zone { 
+            flex: 1 1 200px; background: #fff6e8; border-radius: clamp(16px, 3.5vw, 26px); 
+            padding: 10px 5px; text-align: center; border: 2px dashed #e6bc7a; 
+            transition: 0.08s; min-height: 95px;
+        }
+        .zone h4 { font-size: clamp(1rem, 1.7vw, 1.2rem); color: #b46f2a; font-weight: bold; }
+        .zone p { font-size: clamp(0.75rem, 1.5vw, 0.9rem); margin-top: 0.3rem; }
+        .zone.drag-over { background: #d9f0c2; border: 3px solid #6eac3d; transform: scale(1.01); }
+        .zone.selected { border: 3px solid #4f9e2a; background: #e1f4cf; }
+        .feedback { 
+            background: #f6f0e2; padding: 10px 14px; border-radius: clamp(16px, 3.5vw, 26px); 
+            margin-top: 12px; font-weight: bold; font-size: clamp(0.85rem, 1.6vw, 0.95rem);
+            line-height: 1.4;
+        }
+        /* ========== 美化后的油柑特征卡 ========== */
+        .feature-badge {
+            background: linear-gradient(135deg, #fff8e0 0%, #ffebb7 100%);
+            padding: 14px 18px;
+            border-radius: 24px;
+            display: inline-block;
+            width: 100%;
+            max-width: 340px;
+            cursor: grab;
+            font-weight: bold;
+            box-shadow: 0 8px 16px rgba(255, 180, 80, 0.25);
+            text-align: center;
+            border: 3px solid #ffc489;
+            font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+            margin: 0 auto;
+            transition: all 0.2s ease;
+            color: #8d5a1c;
+        }
+        .feature-badge:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 20px rgba(255, 180, 80, 0.3);
+        }
+        .feature-badge i {
+            color: #ff9800;
+            font-size: 1.1rem;
+            margin-right: 6px;
+        }
+        .feature-badge p {
+            color: #6d4a19;
+            line-height: 1.5;
+            margin-top: 6px;
+        }
+        /* ======================================= */
+
+        .nav-buttons { 
+            display: flex; justify-content: center; gap: 12px;
+            margin-top: -10px; margin-bottom: 12px; flex-wrap: wrap;
+            padding: 0 0.6rem;
+        }
+        .nav-btn { 
+            background: #ffbc5e; padding: 8px 22px;
+            font-size: clamp(0.95rem, 1.7vw, 1.1rem); color: #2c551c; 
+            box-shadow: 0 3px 0 #a26f2a; border-radius: 44px; font-weight: bold;
+        }
+        .footer { 
+            background: rgba(41, 152, 15, 0.85); color: #feefcf; text-align: center; 
+            padding: 0.6rem; font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+            font-weight: bold; line-height: 1.3; backdrop-filter: blur(2px);
+            border-radius: 40px; margin-top: 0.5rem;
+        }
+        .medal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1000; visibility: hidden; opacity: 0; transition: 0.2s;
+            padding: 1rem;
+        }
+        .medal-card {
+            background: #fffae9; border-radius: clamp(1.6rem, 6vw, 2.5rem);
+            padding: 1.2rem 1.5rem; text-align: center;
+            box-shadow: 0 25px 35px rgba(0,0,0,0.3);
+            border: 5px solid #ffc107; max-width: 90%; width: 350px;
+            animation: bounceIn 0.5s ease;
+        }
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            80% { transform: scale(1.02); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .medal-card i { font-size: clamp(3rem, 12vw, 4.5rem); color: #ffb347; text-shadow: 2px 2px 0 #c57f1a; margin-bottom: 0.7rem; }
+        .medal-card h2 { font-size: clamp(1.4rem, 4vw, 2rem); color: #4b7a2e; margin: 6px 0; font-weight: bold; }
+        .medal-card p { font-size: clamp(0.85rem, 1.7vw, 1rem); line-height: 1.45; margin-bottom: 1rem; }
+        .close-medal { background: #ffa559; color: white; border: none; padding: 7px 24px; border-radius: 36px; font-weight: bold; margin-top: 10px; cursor: pointer; font-size: clamp(0.85rem, 1.6vw, 0.95rem); }
+        i { margin-right: 5px; }
+        @media (max-width: 768px) {
+            .story-card { flex-direction: column; text-align: center; }
+            .story-text { order: -1; }
+            .grade-zones { flex-direction: column; }
+            .zone { width: 100%; margin-bottom: 6px; }
+            .nav-buttons { flex-direction: column; align-items: center; }
+            .nav-btn { width: 100%; max-width: 240px; margin-bottom: 6px; }
+            button { width: auto; min-width: 120px; margin: 5px; }
+            .level1-buttons { flex-direction: column; align-items: center; }
+            .radio-options { justify-content: center; }
+            #capturedImg, #level2PreviewImg { max-width: 190px !important; max-height: 170px !important; }
+            .level2-feature-img img { max-width: clamp(120px, 40vw, 180px); }
+            .level3-sort-img img { max-width: clamp(130px, 45vw, 200px); }
+            .image-placeholder { width: 180px; height: 150px; font-size: 13px; }
+            .feature-badge { max-width: 280px; font-size: 0.95rem; padding: 12px 16px; }
+            .game-hub { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+<div class="game-hub">
+    <div class="story-header">
+        <h1><i class="fas fa-leaf"></i> 崩坎油柑合作社 · 见习品果师 <i class="fas fa-hand-sparkles"></i></h1>
+        <div class="badges-wrapper">
+            <div class="village-badge"><i class="fas fa-tractor"></i> 百千万助农行动 · 帮崩坎村卖油柑</div>
+            <div class="village-badge" style="background:#f8e1b0;">🍈 先涩后甜 · 苦尽甘来 🧃 每过一关得+1助农积分！</div>
+        </div>
+    </div>
+    <div class="level-stage" id="levelStage"></div>
+    <div class="nav-buttons">
+        <button class="nav-btn" id="prevBtn" style="display:none;"><i class="fas fa-arrow-left"></i> 上一关</button>
+        <button class="nav-btn" id="nextBtn"><i class="fas fa-arrow-right"></i> 下一关</button>
+    </div>
+    <div class="footer"><i class="fas fa-seedling"></i> 崩坎油柑 × 百千万工程 | AI陪你来助农 🌟 第三关正确拖放后即可获得奖章！</div>
+</div>
+<div id="medalOverlay" class="medal-overlay">
+    <div class="medal-card">
+        <i class="fas fa-medal"></i>
+        <h2>🎉 助农小英雄 🎉</h2>
+        <p>恭喜你完成崩坎油柑三关挑战！<br>帮助崩坎村民分拣油柑，获得<span style="color:#ff8800; font-weight:bold;">「金牌品果师」</span>电子奖章！</p>
+        <button class="close-medal" id="closeMedalBtn">✨ 收下奖章 ✨</button>
+    </div>
+</div>
+<script>
+    const EASYDEL_API_KEY = "54xoHil9BgknKWPxNucvQpX9";
+    const EASYDEL_SECRET_KEY = "qr1ZxkCuv4tsvvYpLfp6AYM9oWAX7DQN";
+
+    let currentImageBase64 = null;
+    let oilVerified = false;
+    let level1Completed = false;
+    let selectedFeatures = { shape: '', skin: '', stem: '' };
+    let level2Completed = false;
+    let finalMatched = false;
+    let currentAIAnswer = { shape: '', skin: '', stem: '' };
+    let aiAnswerValid = false;
+    let currentLevel = 1;
+    let stream = null;
+    let totalScore = 0;
+    let medalShownForSession = false;
+    let currentAccessToken = null;
+
+    const SAMPLE_YOUGAN_IMAGE_URL = "https://p11-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/f917b116cae44551806b54abee60ff88.png~tplv-a9rns2rl98-24:720:720.jpeg?lk3s=8e244e95&rcl=202604302137406BE63123BC625A135A8D&rrcfp=d52e923b&x-expires=1778161060&x-signature=kqv7S38WRnvlX6n7cRZ9AVngXFg%3D";
+
+    function isMobile() { return window.innerWidth <= 768; }
+    
+    function fileToBase64(file) {
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = () => resolve(null);
+            reader.readAsDataURL(file);
+        });
+    }
+    
+    function showScoreAnimation(element, points) { 
+        const rect = element.getBoundingClientRect(); 
+        const div = document.createElement('div'); 
+        div.className = 'score-animation'; 
+        div.innerText = `+${points} 助农积分 🍈✨`; 
+        div.style.left = `${rect.left + rect.width/2 - 60}px`; 
+        div.style.top = `${rect.top - 28}px`; 
+        document.body.appendChild(div); 
+        setTimeout(() => div.remove(), 2200); 
+        totalScore += points; 
+    }
+    
+    function showMedal() { if (medalShownForSession) return; medalShownForSession = true; document.getElementById('medalOverlay').style.visibility = 'visible'; document.getElementById('medalOverlay').style.opacity = '1'; }
+    
+    function getShapeText(v) { if (v === 'round') return '圆润饱满'; if (v === 'flat') return '略扁'; if (v === 'irregular') return '不规则'; return ''; }
+    function getSkinText(v) { if (v === 'green') return '光滑翠绿'; if (v === 'yellow') return '淡黄'; if (v === 'damaged') return '暗沉破损'; return ''; }
+    function getStemText(v) { if (v === 'intact') return '完整'; if (v === 'fallen') return '脱落'; return ''; }
+    
+    function mapShapeResult(label) {
+        if (label === '圆润饱满') return 'round';
+        if (label === '略扁') return 'flat';
+        if (label === '不规则') return 'irregular';
+        return 'round';
+    }
+    
+    function mapSkinResult(label) {
+        if (label === '光滑翠绿') return 'green';
+        if (label === '淡黄') return 'yellow';
+        if (label === '暗沉破损') return 'damaged';
+        return 'green';
+    }
+    
+    function mapStemResult(label) {
+        if (label === '完整') return 'intact';
+        if (label === '脱落') return 'fallen';
+        return 'intact';
+    }
+    
+    async function getAccessToken() { 
+        if (currentAccessToken) return currentAccessToken;
+        const r = await fetch('/api/token', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ apiKey: EASYDEL_API_KEY, secretKey: EASYDEL_SECRET_KEY }) }); 
+        const d = await r.json(); 
+        if (d.access_token) {
+            currentAccessToken = d.access_token;
+            return d.access_token; 
+        }
+        throw new Error('token获取失败'); 
+    }
+    
+    async function callEasyDLAPI(imgBase64) { 
+        try {
+            if (!imgBase64 || imgBase64.length < 100) return { success: false, error: '图片数据无效' };
+            const pure = imgBase64.split(',')[1]; 
+            const token = await getAccessToken(); 
+            const resp = await fetch('/api/classify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ accessToken: token, imageBase64: pure }) }); 
+            const data = await resp.json(); 
+            if (data.results?.length) { 
+                const youganResult = data.results.find(r => r.name === 'yougan');
+                const isValidYougan = youganResult && youganResult.score > 0.5;
+                if (isValidYougan) {
+                    return { success: true, label: 'yougan', confidence: youganResult.score, fullResults: data.results };
+                } else {
+                    const topLabel = data.results[0]?.name === 'non-yougan' ? '非油柑' : (data.results[0]?.name || '非油柑');
+                    return { success: false, label: topLabel, error: `识别为${topLabel}` };
+                }
+            } 
+        } catch(e) { 
+            console.error('API调用失败:', e);
+            return { success: false, error: 'API调用失败' }; 
+        }
+        return { success: false, error: '识别失败' }; 
+    }
+    
+    async function callShapeAPI(imgBase64) {
+        try {
+            const pure = imgBase64.split(',')[1];
+            const token = await getAccessToken();
+            const resp = await fetch('/api/predict_shape', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ accessToken: token, imageBase64: pure })
+            });
+            const data = await resp.json();
+            if (data.results && data.results.length > 0) {
+                const topResult = data.results[0];
+                return { success: true, label: topResult.name, confidence: topResult.score };
+            }
+            return { success: false, error: '果形识别失败' };
+        } catch(e) {
+            console.error('果形API错误:', e);
+            return { success: false, error: e.message };
+        }
+    }
+    
+    async function callSkinAPI(imgBase64) {
+        try {
+            const pure = imgBase64.split(',')[1];
+            const token = await getAccessToken();
+            const resp = await fetch('/api/predict_skin', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ accessToken: token, imageBase64: pure })
+            });
+            const data = await resp.json();
+            if (data.results && data.results.length > 0) {
+                const topResult = data.results[0];
+                return { success: true, label: topResult.name, confidence: topResult.score };
+            }
+            return { success: false, error: '果皮识别失败' };
+        } catch(e) {
+            console.error('果皮API错误:', e);
+            return { success: false, error: e.message };
+        }
+    }
+    
+    async function callStemAPI(imgBase64) {
+        try {
+            const pure = imgBase64.split(',')[1];
+            const token = await getAccessToken();
+            const resp = await fetch('/api/predict_stem', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ accessToken: token, imageBase64: pure })
+            });
+            const data = await resp.json();
+            if (data.results && data.results.length > 0) {
+                const topResult = data.results[0];
+                return { success: true, label: topResult.name, confidence: topResult.score };
+            }
+            return { success: false, error: '果蒂识别失败' };
+        } catch(e) {
+            console.error('果蒂API错误:', e);
+            return { success: false, error: e.message };
+        }
+    }
+    
+    async function verifyWithAI(base64Data, feedbackDiv, confirmBtn) {
+        if (!base64Data) { feedbackDiv.innerHTML = "⚠️ 请先拍照/上传/选样例油柑～"; return false; }
+        feedbackDiv.innerHTML = "🤖 AI正在验货油柑... 请稍等～";
+        try { 
+            const result = await callEasyDLAPI(base64Data);
+            if (result.success && result.label === 'yougan') { 
+                feedbackDiv.innerHTML = `✅ AI验货通过！这是正宗的油柑！(可信度${(result.confidence*100).toFixed(1)}%)`; 
+                oilVerified = true; 
+                if (confirmBtn) confirmBtn.disabled = false;
+                return true;
+            } else { 
+                const displayLabel = (result.label === 'non-yougan' || result.label === '非油柑') ? '非油柑' : (result.label || '非油柑');
+                feedbackDiv.innerHTML = `❌ AI验货失败：这不是油柑 (识别为 ${displayLabel})，请换一张真正的油柑图片～`; 
+                oilVerified = false; 
+                if (confirmBtn) confirmBtn.disabled = true;
+                return false;
+            } 
+        } catch (e) { 
+            feedbackDiv.innerHTML = `⚠️ AI验货出错：${e.message || '请重试'}`; 
+            oilVerified = false;
+            if (confirmBtn) confirmBtn.disabled = true;
+            return false;
+        }
+    }
+    
+    async function fetchRealFeatures() {
+        if (!currentImageBase64) return { success: false, error: '没有图片数据' };
+        try {
+            const [shapeResult, skinResult, stemResult] = await Promise.all([
+                callShapeAPI(currentImageBase64),
+                callSkinAPI(currentImageBase64),
+                callStemAPI(currentImageBase64)
+            ]);
+            console.log('shapeResult:', shapeResult);
+            console.log('skinResult:', skinResult);
+            console.log('stemResult:', stemResult);
+            if (shapeResult.success && skinResult.success && stemResult.success) {
+                return {
+                    success: true,
+                    shape: mapShapeResult(shapeResult.label),
+                    skin: mapSkinResult(skinResult.label),
+                    stem: mapStemResult(stemResult.label),
+                    shapeConfidence: shapeResult.confidence,
+                    skinConfidence: skinResult.confidence,
+                    stemConfidence: stemResult.confidence,
+                    rawShape: shapeResult.label,
+                    rawSkin: skinResult.label,
+                    rawStem: stemResult.label
+                };
+            } else {
+                const errors = [];
+                if (!shapeResult.success) errors.push(`果形:${shapeResult.error}`);
+                if (!skinResult.success) errors.push(`果皮:${skinResult.error}`);
+                if (!stemResult.success) errors.push(`果蒂:${stemResult.error}`);
+                return { success: false, error: errors.join(' | ') };
+            }
+        } catch(e) {
+            return { success: false, error: e.message };
+        }
+    }
+    
+    async function fetchAndVerifyFeatures(feedbackDiv, submitBtn) {
+        if (!currentImageBase64) { feedbackDiv.innerHTML = "⚠️ 请确保已有油柑图片～"; return false; }
+        feedbackDiv.innerHTML = "🤖 AI正在识别油柑特征... 请稍等～";
+        try { 
+            const result = await fetchRealFeatures();
+            if (result.success) {
+                currentAIAnswer = { shape: result.shape, skin: result.skin, stem: result.stem };
+                aiAnswerValid = true;
+                let feedback = "🔍 AI批改结果：<br>";
+                let allCorrect = true;
+                if (selectedFeatures.shape === currentAIAnswer.shape && selectedFeatures.shape) {
+                    feedback += "✅ 果形识别正确：" + getShapeText(selectedFeatures.shape) + "<br>";
+                } else if (selectedFeatures.shape) {
+                    feedback += `❌ 果形错误：你选了${getShapeText(selectedFeatures.shape)}，AI识别是${getShapeText(currentAIAnswer.shape)}<br>`;
+                    allCorrect = false;
+                } else { feedback += "⚠️ 果形还没选～<br>"; allCorrect = false; }
+                if (selectedFeatures.skin === currentAIAnswer.skin && selectedFeatures.skin) {
+                    feedback += "✅ 果皮识别正确：" + getSkinText(selectedFeatures.skin) + "<br>";
+                } else if (selectedFeatures.skin) {
+                    feedback += `❌ 果皮错误：你选了${getSkinText(selectedFeatures.skin)}，AI识别是${getSkinText(currentAIAnswer.skin)}<br>`;
+                    allCorrect = false;
+                } else { feedback += "⚠️ 果皮还没选～<br>"; allCorrect = false; }
+                if (selectedFeatures.stem === currentAIAnswer.stem && selectedFeatures.stem) {
+                    feedback += "✅ 果蒂识别正确：" + getStemText(selectedFeatures.stem) + "<br>";
+                } else if (selectedFeatures.stem) {
+                    feedback += `❌ 果蒂错误：你选了${getStemText(selectedFeatures.stem)}，AI识别是${getStemText(currentAIAnswer.stem)}<br>`;
+                    allCorrect = false;
+                } else { feedback += "⚠️ 果蒂还没选～<br>"; allCorrect = false; }
+                feedbackDiv.innerHTML = feedback;
+                if (submitBtn) submitBtn.disabled = !allCorrect;
+                if (allCorrect) feedbackDiv.innerHTML += "🎉 全部正确！点击按钮获得积分～";
+                return allCorrect;
+            } else {
+                feedbackDiv.innerHTML = `⚠️ AI特征识别失败：${result.error}，请重试～`;
+                if (submitBtn) submitBtn.disabled = true;
+                return false;
+            }
+        } catch (e) { 
+            feedbackDiv.innerHTML = `⚠️ AI批改出错：${e.message}`;
+            if (submitBtn) submitBtn.disabled = true;
+            return false;
+        }
+    }
+    
+    function checkAllCorrect() { 
+        return aiAnswerValid && selectedFeatures.shape && selectedFeatures.skin && selectedFeatures.stem && 
+               selectedFeatures.shape === currentAIAnswer.shape && 
+               selectedFeatures.skin === currentAIAnswer.skin && 
+               selectedFeatures.stem === currentAIAnswer.stem; 
+    }
+    
+    function computeExpectedGrade(features) { 
+        const { shape, skin, stem } = features; 
+        if (shape === 'flat' || skin === 'yellow') return 'premium'; 
+        if (skin === 'green') return 'secondary'; 
+        if (skin === 'damaged') return 'reject'; 
+        if (shape === 'irregular' || stem === 'fallen') return 'reject'; 
+        return 'secondary'; 
+    }
+    
+    function getFeatureCardText() { 
+        const { shape, skin, stem } = selectedFeatures; 
+        if (shape && skin && stem) return `🍈 果形：${getShapeText(shape)}\n🍃 果皮：${getSkinText(skin)}\n🌿 果蒂：${getStemText(stem)}`; 
+        return '✨ 🌟 等待小小品果师提取特征 🌟 ✨'; 
+    }
+    
+    function updateSummaryUI() { 
+        const cardDiv = document.getElementById('dragFeatureCard'); 
+        if (cardDiv) { 
+            const text = getFeatureCardText(); 
+            cardDiv.innerHTML = `<i class="fas fa-seedling"></i> 油柑特征卡<br><p style="font-size:0.9rem; margin-top:5px; white-space:pre-line;">${text.replace(/\n/g, '<br>')}</p>`; 
+        } 
+    }
+    
+    function setImageFromBase64(base64, previewImgElement) {
+        currentImageBase64 = base64;
+        if (previewImgElement) {
+            previewImgElement.src = base64;
+            previewImgElement.style.display = 'block';
+        }
+        oilVerified = false;
+        level1Completed = false;
+        const confirmBtn = document.getElementById('confirmCollectBtn');
+        if (confirmBtn) confirmBtn.disabled = true;
+        const verifyBtnElem = document.getElementById('verifyOilBtn');
+        if (verifyBtnElem) verifyBtnElem.disabled = false;
+        const feedbackDiv = document.getElementById('level1Feedback');
+        if (feedbackDiv) feedbackDiv.innerHTML = "📸 新油柑已就位，点击“AI验货”帮你来鉴定～";
+        const previewImg = document.getElementById('level2PreviewImg');
+        if (previewImg && base64) previewImg.src = base64;
+        selectedFeatures = { shape: '', skin: '', stem: '' };
+        aiAnswerValid = false;
+        currentAIAnswer = { shape: '', skin: '', stem: '' };
+        level2Completed = false;
+        finalMatched = false;
+        medalShownForSession = false;
+        const submitFeat = document.getElementById('submitFeaturesBtn');
+        if (submitFeat) submitFeat.disabled = true;
+        const level3Feedback = document.getElementById('level3Feedback');
+        if (level3Feedback) level3Feedback.innerHTML = "🎯 拖拽卡片到正确工坊，帮崩坎增收！";
+        document.querySelectorAll('.zone').forEach(z => z.classList.remove('selected'));
+        updateSummaryUI();
+    }
+    
+    function attachLevel1Events() { 
+        const verifyBtnElem = document.getElementById('verifyOilBtn'), confirmBtnElem = document.getElementById('confirmCollectBtn'), feedbackDiv = document.getElementById('level1Feedback');
+        const video = document.getElementById('video'), hiddenCanvas = document.getElementById('hiddenCanvas'), capturedImg = document.getElementById('capturedImg');
+        const startCamBtn = document.getElementById('startCameraBtn'), takePhotoBtn = document.getElementById('takePhotoBtn');
+        const uploadFile = document.getElementById('uploadImage'), useSampleBtn = document.getElementById('useSampleBtn');
+        let streamLocal = null;
+        startCamBtn.onclick = async () => {
+            if (streamLocal) { streamLocal.getTracks().forEach(t=>t.stop()); streamLocal=null; video.style.display='none'; capturedImg.style.display='block'; takePhotoBtn.disabled=true; startCamBtn.innerHTML='📷 相机'; return; }
+            try{ streamLocal = await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}}); video.srcObject=streamLocal; video.style.display='block'; capturedImg.style.display='none'; document.querySelector('.image-placeholder').style.display = 'none'; takePhotoBtn.disabled=false; startCamBtn.innerHTML='📹 关闭'; }catch(e){ feedbackDiv.innerHTML="📸 相机打不开，用上传图片～"; }
+        };
+        takePhotoBtn.onclick = () => {
+            if(!video.srcObject) return;
+            hiddenCanvas.width = video.videoWidth; hiddenCanvas.height = video.videoHeight;
+            hiddenCanvas.getContext('2d').drawImage(video, 0, 0);
+            const imgData = hiddenCanvas.toDataURL('image/jpeg', 0.9);
+            capturedImg.src = imgData; capturedImg.style.display = 'block';
+            document.querySelector('.image-placeholder').style.display = 'none';
+            setImageFromBase64(imgData, capturedImg);
+            if(streamLocal){ streamLocal.getTracks().forEach(t=>t.stop()); streamLocal=null; video.style.display='none'; takePhotoBtn.disabled=true; startCamBtn.innerHTML='📷 相机'; }
+        };
+        uploadFile.onchange = async (e) => { const file = e.target.files[0]; if(!file) return; const base64 = await fileToBase64(file); if(base64) { capturedImg.src = base64; capturedImg.style.display = 'block'; document.querySelector('.image-placeholder').style.display = 'none'; setImageFromBase64(base64, capturedImg); } };
+       useSampleBtn.onclick = async () => {
+			try {
+				const response = await fetch(SAMPLE_YOUGAN_IMAGE_URL);
+				const blob = await response.blob();
+				const base64 = await new Promise((resolve) => { 
+					const reader = new FileReader(); 
+					reader.onloadend = () => resolve(reader.result); 
+					reader.readAsDataURL(blob); 
+				});
+				if(base64) { 
+					capturedImg.src = base64; 
+					capturedImg.style.display = 'block'; 
+					document.querySelector('.image-placeholder').style.display = 'none'; 
+					setImageFromBase64(base64, capturedImg); 
+					feedbackDiv.innerHTML = "✅ 样例油柑已加载！请点击【🤖 AI验货】按钮进行识别";
+				}
+			} catch(e) { 
+				feedbackDiv.innerHTML = "⚠️ 加载样例图片失败，请重试"; 
+			}
+		};
+        verifyBtnElem.onclick = async () => { if (!currentImageBase64) { feedbackDiv.innerHTML = "⚠️ 请先拍照/上传/选样例油柑～"; return; } await verifyWithAI(currentImageBase64, feedbackDiv, confirmBtnElem); };
+        confirmBtnElem.onclick = () => { if (!oilVerified) return; level1Completed = true; showScoreAnimation(confirmBtnElem, 1); feedbackDiv.innerHTML = "🎉 第一关通过！获得1助农积分，点击“下一关”眼力大闯关～"; confirmBtnElem.disabled = true; verifyBtnElem.disabled = true; updateNavButtons(); };
+    }
+    
+    function attachLevel2Events() { 
+        const verifyBtn = document.getElementById('verifyFeaturesBtn'), submitBtn = document.getElementById('submitFeaturesBtn'), feedbackDiv = document.getElementById('level2Feedback');
+        const shapeRadios = document.querySelectorAll('input[name="shape"]'), skinRadios = document.querySelectorAll('input[name="skin"]'), stemRadios = document.querySelectorAll('input[name="stem"]');
+        selectedFeatures = { shape: '', skin: '', stem: '' };
+        aiAnswerValid = false;
+        currentAIAnswer = { shape: '', skin: '', stem: '' };
+        if (submitBtn) submitBtn.disabled = true;
+        shapeRadios.forEach(radio => radio.onchange = (e) => { selectedFeatures.shape = e.target.value; if (submitBtn) submitBtn.disabled = !checkAllCorrect(); updateSummaryUI(); });
+        skinRadios.forEach(radio => radio.onchange = (e) => { selectedFeatures.skin = e.target.value; if (submitBtn) submitBtn.disabled = !checkAllCorrect(); updateSummaryUI(); });
+        stemRadios.forEach(radio => radio.onchange = (e) => { selectedFeatures.stem = e.target.value; if (submitBtn) submitBtn.disabled = !checkAllCorrect(); updateSummaryUI(); });
+        verifyBtn.onclick = async () => { if (!currentImageBase64) { feedbackDiv.innerHTML = "⚠️ 请确保已有油柑图片～"; return; } await fetchAndVerifyFeatures(feedbackDiv, submitBtn); };
+        submitBtn.onclick = () => { if (!checkAllCorrect()) return; level2Completed = true; showScoreAnimation(submitBtn, 1); feedbackDiv.innerHTML = "🎊 第二关通过！获得1助农积分，点击“下一关”挑战分拣小英雄～"; submitBtn.disabled = true; verifyBtn.disabled = true; updateNavButtons(); };
+    }
+    
+    function attachLevel3Events() {
+        const featureCard = document.getElementById('dragFeatureCard'), dropZones = document.querySelectorAll('.drop-zone'), feedbackDiv = document.getElementById('level3Feedback');
+        const expectedGrade = computeExpectedGrade(selectedFeatures);
+        featureCard.ondragstart = (e) => { e.dataTransfer.setData('text/plain', 'featureCard'); setTimeout(() => featureCard.style.opacity = '0.5', 0); };
+        featureCard.ondragend = () => { featureCard.style.opacity = '1'; dropZones.forEach(zone => zone.classList.remove('drag-over')); };
+        dropZones.forEach(zone => {
+            zone.ondragover = (e) => { e.preventDefault(); zone.classList.add('drag-over'); };
+            zone.ondragleave = () => { zone.classList.remove('drag-over'); };
+            zone.ondrop = (e) => { e.preventDefault(); zone.classList.remove('drag-over'); const targetGrade = zone.dataset.targetGrade; dropZones.forEach(z => z.classList.remove('selected')); zone.classList.add('selected'); if (targetGrade === expectedGrade) { feedbackDiv.innerHTML = `✅ 分拣正确！${zone.dataset.gradeName} 是这颗油柑的最佳去处～`; finalMatched = true; showScoreAnimation(zone, 1); setTimeout(showMedal, 1000); } else { feedbackDiv.innerHTML = `❌ 分拣错误：这颗油柑应该去${document.querySelector(`.drop-zone[data-target-grade="${expectedGrade}"]`).dataset.gradeName}～`; finalMatched = false; } };
+        });
+    }
+    
+    function renderLevel() { 
+        const container = document.getElementById('levelStage');
+        if (!container) return;
+        let storyHtml = '';
+        if (currentLevel === 1) storyHtml = `<div class="story-card"><div class="story-text"><h3><i class="fas fa-tree"></i> 你好，小小品果师！</h3>
+<p>
+🌾 普宁崩坎村的油柑丰收啦！<br>
+每到丰收时节，成堆油柑全靠人工分拣，村民忙得格外辛苦。<br>
+今天，我们化身小小品果师，用图像识别的科学本领，为乡村减负，为家乡助力！<br>
+</p></div><div class="story-img-custom"><img src="https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/14e5a8602ddd453bac4f45833789be97.png~tplv-a9rns2rl98-24:720:720.png?lk3s=8e244e95&rcl=202604290832373BBF9DDC31A16D4C825D&rrcfp=8a172a1a&x-expires=1778027558&x-signature=pojaqqD%2FnxwkigreXUBrLVabRlQ%3D" alt="油柑小男孩"></div></div>`;
+        else if (currentLevel === 2) storyHtml = `<div class="story-card"><div class="story-text"><h3><i class="fas fa-star-of-life"></i> 🔍 第二关 · 眼力大闯关 </h3><p>🔎 本关模拟特征提取原理<br>用心观察油柑果形、果皮、果蒂的细微差别，读懂每一颗果子的独有特质。<br>让我们用细心与学识，助力家乡油柑建立品质标准，让好特产被看见、被认可。<br>✅ 全部选对还能获得⭐助农积分」！</p></div><div class="level2-feature-img"><img src="https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/b3899938877d414fa9ac44546e4d389b.png~tplv-a9rns2rl98-24:720:720.png?lk3s=8e244e95&rcl=2026042909181300ED4077EA68F3FFF616&rrcfp=8a172a1a&x-expires=1778030293&x-signature=pEccpwMKxJ5LLcyN9gwwfJtrF5w%3D" alt="油柑特征说明"></div></div>`;
+        else storyHtml = `<div class="story-card"><div class="story-text"><h3><i class="fas fa-people-arrows"></i>  第三关 · 分拣小英雄 </h3><p>🧃 拖拽油柑卡片到正确工坊：<br>🔹 本关模拟智能识别分类原理<br>🔹 依据品相合理分拣，让每颗油柑物尽其用，减少浪费、轻松劳作、助力农户增收。<br>🔹 回答正确更有🏅助农奖章！</p></div><div class="level3-sort-img"><img src="https://p11-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/92e63fd4e6e44f6ebec19e27cf06fb53.png~tplv-a9rns2rl98-24:720:720.png?lk3s=8e244e95&rcl=202604290922238ECE0B29D54FCC596823&rrcfp=8a172a1a&x-expires=1778030544&x-signature=yOjZEKksdHBvHTmYsBq84bzdXOc%3D" alt="油柑分拣插画"></div></div>`;
+        if (currentLevel === 1) { 
+            container.innerHTML = storyHtml + `<div class="current-level-card" id="levelCard1"><div class="level-illustration"><div class="level-title">📸 第一关 · 图像采集</div></div><div class="card-body"><div class="camera-area"><video id="video" autoplay playsinline style="display:none;"></video><canvas id="hiddenCanvas" style="display:none;"></canvas><div class="image-placeholder">请点击以下按钮，为油柑采集图像吧！</div><img id="capturedImg" style="display:none;"><div><button id="startCameraBtn"><i class="fas fa-camera"></i> 相机</button><button id="takePhotoBtn" disabled><i class="fas fa-camera-retro"></i> 咔嚓拍照</button><label for="uploadImage" class="primary" style="background:#c2852f; padding:5px 14px; border-radius:36px; display:inline-block; cursor:pointer; color:white; font-size:0.85rem;"><i class="fas fa-cloud-upload-alt"></i> 上传</label><input type="file" id="uploadImage" accept="image/*" style="display:none;"><button id="useSampleBtn"><i class="fas fa-apple-alt"></i>  样例油柑</button></div></div><div class="level1-buttons"><button id="verifyOilBtn" class="primary"><i class="fab fa-baidu"></i> 🤖 AI验货</button><button id="confirmCollectBtn" disabled><i class="fas fa-check-circle"></i> 通过 · 获得质检章 (+1积分)</button></div><div id="level1Feedback" class="feedback">📸 请拍照或上传真正的油柑图片，AI帮你来鉴定～</div></div></div>`; 
+            attachLevel1Events(); 
+        } else if (currentLevel === 2) { 
+            if (!level1Completed) { alert("🍈 请先完成第一关！"); currentLevel = 1; renderLevel(); updateNavButtons(); return; } 
+            container.innerHTML = storyHtml + `<div class="current-level-card" id="levelCard2"><div class="level-illustration"><div class="level-title">🔍 第二关 · 特征提取算法</div></div><div class="card-body"><div style="text-align:center;"><img id="level2PreviewImg" src="${currentImageBase64 || 'https://placehold.co/150x120/e5d2b0/8b6940?text=油柑'}" style="border-radius:16px; border:3px solid #ffbc6e; max-width:200px; max-height:180px;"></div><div class="feature-options"><div class="feat-group"><label><i class="fas fa-shapes"></i> 果形</label><div class="radio-options">${['round', 'flat', 'irregular'].map(v => `<label><input type="radio" name="shape" value="${v}"> ${getShapeText(v)}</label>`).join('')}</div></div><div class="feat-group"><label><i class="fas fa-apple-alt"></i> 果皮</label><div class="radio-options">${['green', 'yellow', 'damaged'].map(v => `<label><input type="radio" name="skin" value="${v}"> ${getSkinText(v)}</label>`).join('')}</div></div><div class="feat-group"><label><i class="fas fa-tree"></i> 果蒂</label><div class="radio-options">${['intact', 'fallen'].map(v => `<label><input type="radio" name="stem" value="${v}"> ${getStemText(v)}</label>`).join('')}</div></div></div><div class="level1-buttons"><button id="verifyFeaturesBtn" style="background:#ffbb4c;"><i class="fas fa-check-double"></i> ✨ AI批改</button><button id="submitFeaturesBtn" disabled><i class="fas fa-user-check"></i> ⭐ 全对上岗 (+1积分)</button></div><div id="level2Feedback" class="feedback">📋 观察油柑，选择三个特征 → AI批改 ⭐ 全对才能升级</div></div></div>`; 
+            attachLevel2Events(); 
+            updateSummaryUI(); 
+        } else if (currentLevel === 3) { 
+            if (!level2Completed) { alert("✨ 请先完成第二关！"); currentLevel = 2; renderLevel(); updateNavButtons(); return; } 
+            const featureText = (selectedFeatures.shape && selectedFeatures.skin && selectedFeatures.stem) ? ` 果形：${getShapeText(selectedFeatures.shape)}\n 果皮：${getSkinText(selectedFeatures.skin)}\n 果蒂：${getStemText(selectedFeatures.stem)}` : '✨ 🌟 等待小小品果师提取特征 🌟 ✨'; 
+            container.innerHTML = storyHtml + `<div class="current-level-card"><div class="level-illustration"><div class="level-title">🖱️ 第三关 · 分类算法</div></div><div class="card-body"><div style="text-align:center;"><div class="feature-badge" draggable="true" id="dragFeatureCard"><i class="fas fa-seedling"></i> 油柑特征卡<br><p style="font-size:0.9rem; margin-top:5px; white-space:pre-line;">${featureText.replace(/\n/g, '<br>')}</p></div><p style="font-size:0.75rem; margin-top:4px;">👇 按住卡片拖到下面的工坊</p></div><div class="grade-zones" id="gradeZonesContainer"><div class="zone drop-zone" data-target-grade="premium" data-grade-name="一级·油柑汁工坊"><h4>🧃 一级工坊</h4><p> 略扁 或 淡黄 → 榨汁助农</p></div><div class="zone drop-zone" data-target-grade="secondary" data-grade-name="二级·果脯蜜饯坊"><h4>🍬 二级工坊</h4><p>光滑翠绿 → 果脯香甜</p></div><div class="zone drop-zone" data-target-grade="reject" data-grade-name="三级·堆肥田园"><h4>🌱 三级工坊</h4><p>暗沉破损 → 化作春泥</p></div></div><div id="level3Feedback" class="feedback">🎯 规则：略扁 或 淡黄 → 一级🧃；光滑翠绿→二级🍬；暗沉破损→三级🌱</div></div></div>`; 
+            attachLevel3Events(); 
+        }
+        updateNavButtons();
+    }
+    
+    function updateNavButtons() {
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        if (currentLevel === 1) { prevBtn.style.display = 'none'; } else { prevBtn.style.display = 'inline-flex'; prevBtn.disabled = false; }
+        if (currentLevel === 3) {
+            nextBtn.disabled = false;
+            nextBtn.innerHTML = '<i class="fas fa-trophy"></i> 查看奖章';
+            nextBtn.onclick = () => { if (finalMatched) { showMedal(); } else { alert("✨ 请先正确拖拽油柑卡片完成分拣～"); } };
+        } else {
+            nextBtn.innerHTML = '<i class="fas fa-arrow-right"></i> 下一关';
+            nextBtn.disabled = (currentLevel === 1 && !level1Completed) || (currentLevel === 2 && !level2Completed);
+            nextBtn.onclick = () => { if ((currentLevel === 1 && level1Completed) || (currentLevel === 2 && level2Completed)) { currentLevel++; renderLevel(); } };
+        }
+        prevBtn.onclick = () => { if (currentLevel > 1) { currentLevel--; renderLevel(); } };
+    }
+    
+    renderLevel();
+    document.getElementById('closeMedalBtn').onclick = () => { document.getElementById('medalOverlay').style.visibility = 'hidden'; document.getElementById('medalOverlay').style.opacity = '0'; };
+</script>
+</body>
+</html>
