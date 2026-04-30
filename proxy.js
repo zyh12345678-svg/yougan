@@ -1,7 +1,8 @@
 const express = require('express');
 const fetch = require('node-fetch');
 const app = express();
-const PORT = 3000;
+// 从环境变量读取端口，不存在则使用3000
+const port = process.env.PORT || 3000;
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.static('.'));
@@ -95,11 +96,11 @@ app.post('/api/predict_stem', async (req, res) => {
   await callModel(req, res, STEM_MODEL_SUFFIX, '果蒂');
 });
 
-app.listen(PORT, () => {
-  console.log(`\n🚀 代理服务运行在 http://localhost:${PORT}`);
+app.listen(port, () => {
+  console.log("服务启动成功！端口：", port);
   console.log(`📋 模型配置:`);
   console.log(`   果形模型后缀: ${SHAPE_MODEL_SUFFIX}`);
   console.log(`   果皮模型后缀: ${SKIN_MODEL_SUFFIX}`);
   console.log(`   果蒂模型后缀: ${STEM_MODEL_SUFFIX}`);
-  console.log(`\n✨ 请访问 http://localhost:${PORT}/index.html\n`);
+  console.log(`\n✨ 请访问 http://localhost:${port}/index.html\n`);
 });
